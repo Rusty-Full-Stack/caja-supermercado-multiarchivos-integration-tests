@@ -64,3 +64,53 @@ fn pago_por_transferencia_bancaria(monto_a_pagar: f32) -> modelo_pagos::Resultad
         cambio: 0.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use crate::models::modelo_pagos::ResultadoPago;
+    use super::*;
+
+    #[test]
+    fn prueba_pago_en_efectivo() {
+        let observado = pago_en_efectivo(100.00, 110.00);
+        let esperado = ResultadoPago {
+            metodo_pago: String::from("En Efectivo"),
+            fue_exitoso: true,
+            cambio: 10.00
+        };
+
+        assert_eq!(observado.metodo_pago, esperado.metodo_pago);
+        assert!(observado.fue_exitoso);
+        assert_eq!(observado.cambio, esperado.cambio);
+    }
+
+    #[test]
+    fn prueba_pago_con_tarjeta() {
+        let observado = pago_con_tarjeta(100.00, r#"12345678-9"#);
+        let esperado = ResultadoPago {
+            metodo_pago: String::from("Tarjeta"),
+            fue_exitoso: true,
+            cambio: 0.00
+        };
+
+        assert_eq!(observado.metodo_pago, esperado.metodo_pago);
+        assert!(observado.fue_exitoso);
+        assert_eq!(observado.cambio, esperado.cambio);
+    }
+
+    #[test]
+    fn prueba_pago_por_transferencia_bancaria() {
+        let observado = pago_por_transferencia_bancaria(100.00);
+        let esperado = ResultadoPago {
+            metodo_pago: String::from("Transferencia Bancaria"),
+            fue_exitoso: true,
+            cambio: 0.00
+        };
+
+        assert_eq!(observado.metodo_pago, esperado.metodo_pago);
+        assert!(observado.fue_exitoso);
+        assert_eq!(observado.cambio, esperado.cambio);
+    }
+
+}

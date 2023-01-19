@@ -48,3 +48,58 @@ pub fn pagar_compra(metodo_de_pago: modelo_pagos::MetodoDePago, monto_a_pagar: f
 
     resultado
 }
+
+#[cfg(test)]
+mod tests {
+
+    use crate::modelo_compras::Item;
+    use super::*;
+
+    #[test]
+    fn agregando_un_item_a_la_cuenta() {
+        let mut items_compra: Vec<Item> = Vec::new();
+
+        let item: Item = Item{
+            nombre: String::from("item de prueba"),
+            precio_unitario: 1.25,
+            cantidad: 1.0
+        };
+
+        agregar_item(&mut items_compra, item);
+
+        assert_eq!(items_compra[0].nombre, String::from("item de prueba"));
+        assert_eq!(items_compra[0].precio_unitario, 1.25);
+        assert_eq!(items_compra[0].cantidad, 1.0);
+    }
+
+    #[test]
+    fn quitando_un_item_a_la_cuenta() {
+        let mut items_compra: Vec<Item> = Vec::new();
+
+        let item1: Item = Item{
+            nombre: String::from("item de prueba1"),
+            precio_unitario: 1.25,
+            cantidad: 1.0
+        };
+
+        let item2: Item = Item{
+            nombre: String::from("item de prueba2"),
+            precio_unitario: 1.25,
+            cantidad: 1.0
+        };
+
+        items_compra.push(item1);
+        items_compra.push(item2);
+
+        assert_eq!(items_compra.len(), 2);
+
+        // Quitando item de prueba1
+        quitar_item(&mut items_compra, 0);
+
+        assert_eq!(items_compra.len(), 1);
+        assert_eq!(items_compra[0].nombre, String::from("item de prueba2"));
+        assert_eq!(items_compra[0].precio_unitario, 1.25);
+        assert_eq!(items_compra[0].cantidad, 1.0);
+    }
+
+}
