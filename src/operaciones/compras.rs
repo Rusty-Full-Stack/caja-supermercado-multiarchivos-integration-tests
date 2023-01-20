@@ -52,7 +52,7 @@ pub fn pagar_compra(metodo_de_pago: modelo_pagos::MetodoDePago, monto_a_pagar: f
 #[cfg(test)]
 mod tests {
 
-    use crate::modelo_compras::Item;
+    use crate::models::modelo_compras::Item;
     use super::*;
 
     #[test]
